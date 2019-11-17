@@ -1,4 +1,5 @@
 package chatclient;
+import java.awt.Font;
 //package edu.lmu.cs.networking;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,9 +59,15 @@ public class ChatClient {
      */
     public ChatClient() {
     	this.arm = new Arm(this);
+    	//Set Text Size
+    	Font font1 = new Font("SansSerif", Font.PLAIN, 30);
+
+    	
         // Layout GUI
         textField.setEditable(false);
+        textField.setFont(font1);
         messageArea.setEditable(false);
+        messageArea.setFont(font1);
         frame.getContentPane().add(textField, "North");
         frame.getContentPane().add(new JScrollPane(messageArea), "Center");
         frame.pack();
