@@ -1,5 +1,6 @@
 package arm;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -24,7 +25,6 @@ public class ChatListener extends Thread {
 	}
 	public void run() {
 		while (true) {
-//			System.out.println("Chat Listener Active");
 			chat = getChat();
 			try {
 				this.sleep(RATE);
@@ -36,48 +36,39 @@ public class ChatListener extends Thread {
 			
 			if (chat.size()>0) {
 				String line = chat.poll();
-//				System.out.println(line);
-				//check to see if ccds is the one that sent the message
 				
-//				if (false && username.toLowerCase().equals("CCDS")) {
-				int index = line.indexOf("CCDS");
 				
-				if (index != -1) {
-					//splits the CCSD:command, only command is stored
-					
-					String command = line.substring(index + 5, line.length() - 1);
-					
-//					String command = line2.split(":")[1].split(" ")[1];
-					
-					String[] commandSplit = command.split("_");
-					String subsystem = commandSplit[0];
-					if (subsystem.equals("ARM")){
-						System.out.println("arm command recognized");
-						//if command is ARM_START_SIMULATION
-						if (commandSplit.length > 1) {
-							if (commandSplit[1].equals("START") && commandSplit[2].equals("SIMULATION")) {
-								a.startSimulation();
-								System.out.println("ARM_SIMULATION_STARTUP");
-//								ChatPrint.toPrint("ARM_SIMULATION_ACTIVE");
-							}else if (!this.a.isAlive()){
-								//do nothing if the main arm thread is not alive
-								String text1 = "ARM SIMULATION INACTIVE";
-								String text2 = "Please Start Simulation by issuing ARM_START_SIMULATION";
-								System.out.println(text1);
-								ChatPrint.toPrint(text1);
-								System.out.println(text2);
-								ChatPrint.toPrint(text2);
-							}else {
-								CommandList.addCommand(command);
-							}
-						}
-						else {
-							ChatPrint.toPrint("ARM INSTRUCTION ERROR");
-						}
-					}
-					
-//					System.out.println(line);
+				//Ignore all lines said by Us the arm user
+				if (line.indexOf("ARM:") != -1) {
+					continue;
 				}
+				
+				int index = line.indexOf(": ");
+				
+				///Split the line to subsystem and command
+				String command = line.substring(index + 2, line.length());
+				String[] tempSplit = command.split("_");
+				
+				//skip command if not enough arguments are passed
+				if (tempSplit.length <2) {
+					ChatPrint.toPrint("ARM_COMMAND_NOT_RECOGNIZED_[" + command + "]");
+					continue;
+				}
+				String subsystem = tempSplit[0];
+				String[] commandList = Arrays.copyOfRange(tempSplit, 1, tempSplit.length - 1);
+				
+				//make sure the arm simulation is running
+				if (!a.isAlive()) {
+					a.startSimulation();
+				}
+				//add in here any other subsystem we need to listen to
+				if (subsystem.equals("ARM")) {
+					CommandList.addCommand(command);
+					continue;
+				}
+				if (subsystem.contentEquals("")) {
+				}
+				
 			}
 		}
 	}
