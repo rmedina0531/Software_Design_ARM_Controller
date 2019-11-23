@@ -2,6 +2,10 @@ package arm;
 
 public class Turret {
 	int turretJoint;
+	
+	public Turret() {
+		this.turretJoint=0;
+	}
 	public Turret(int turretJoint) {
 		this.turretJoint=turretJoint;
 	}

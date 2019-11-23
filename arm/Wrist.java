@@ -3,6 +3,9 @@ package arm;
 public class Wrist {	
 	int wristJoint;
 	
+	public Wrist() {
+		this.wristJoint=0;
+	}
 	public Wrist(int wristJoint) {
 		this.wristJoint=wristJoint;
 	}
