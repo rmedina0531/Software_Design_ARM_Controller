@@ -51,7 +51,7 @@ public class ChatListener extends Thread {
 				
 				//skip command if not enough arguments are passed
 				if (tempSplit.length <2) {
-					ChatPrint.toPrint("ARM_COMMAND_NOT_RECOGNIZED_[" + command + "]");
+//					ChatPrint.toPrint("ARM_COMMAND_NOT_RECOGNIZED_[" + command + "]");
 					continue;
 				}
 				String subsystem = tempSplit[0];

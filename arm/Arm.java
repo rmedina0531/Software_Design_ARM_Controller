@@ -19,8 +19,8 @@ public class Arm extends Thread{
 	
 //	private Shoulder shoulder;
 //	private Elbow elbow;
-//	private Wrist wrist;
-//	private Turret turret;
+	private Wrist wrist;
+	private Turret turret;
 	
 	public Arm(ChatClient c) {
 		this.t = new Talker(c);
@@ -66,13 +66,22 @@ public class Arm extends Thread{
 		//look for commands that pass argumemts
 		
 		String[] commandArray = command.split("_");
+
 		if (commandArray.length == 7) {
+			String shoulder_h = commandArray[2];
+			String shoulder_v = commandArray[3];
+			String elbow = commandArray[4];
+			String wrist = commandArray[5];
+			String turret = commandArray[6];
+			
+			ChatPrint.toPrint("ARM_RESPONSE_MOVE_" + shoulder_h + "_" + shoulder_v + "_" + elbow + "_" + wrist + "_" + turret);
 			//ARM_MOVE_1_2_3_4_5
 			//move arm commands
 			//shoulder.shoulderGoTo(commandArray[2], commandArray[3]);
 			//elbow([4])
 			//wrist([5])
 			//turret([6])
+			return;
 		}
 		
 		
@@ -119,6 +128,7 @@ public class Arm extends Thread{
 				//do stuff
 				break;
 			case "ARM_POSITION":
+				ChatPrint.toPrint("ARM_RESPONSE_POSITION_");
 				//do stuff
 				break;
 			case "ARM_TURRET_POSITION":
