@@ -109,11 +109,12 @@ public class ChatClient {
      * Prompt for and return the desired screen name.
      */
     private String getName() {
-        return JOptionPane.showInputDialog(
-            frame,
-            "Choose a screen name:",
-            "Screen name selection",
-            JOptionPane.PLAIN_MESSAGE);
+    	return "ARM";
+//        return JOptionPane.showInputDialog(
+//            frame,
+//            "Choose a screen name:",
+//            "Screen name selection",
+//            JOptionPane.PLAIN_MESSAGE);
     }
 
     /**

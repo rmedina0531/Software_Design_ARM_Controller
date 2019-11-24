@@ -87,6 +87,15 @@ public class Arm extends Thread{
 		//Swich for the rest of the commands
 		if (this.fault_power == false) {
 			ChatPrint.toPrint("ARM_DISABLED_BY_FAULT_PROTECTION");
+			return;
+		}
+		if (this.power == false) {
+			if (command.equals("ARM_POWER_ON")) {
+				this.power = true;
+				ChatPrint.toPrint("ARM_STATUS_POWER_ON");
+			}else {
+				ChatPrint.toPrint("ARM_STATUS_POWERED_OFF");
+			}
 		}else {
 			if (commandArray.length == 7) {
 				String shoulder_h = commandArray[2];
@@ -114,10 +123,6 @@ public class Arm extends Thread{
 			
 			switch (command)
 			{
-				case "ARM_POWER_ON":
-					ChatPrint.toPrint("ARM_RESPONSE_POWER_ACK");
-					this.power = true;
-					break;
 				case "ARM_HEAT":
 					//do stuff
 					ChatPrint.toPrint("ARM_RESPONSE_HEAT_ACK");
@@ -151,7 +156,7 @@ public class Arm extends Thread{
 						status = "OFF";
 					}
 					ChatPrint.toPrint("ARM_STATUS_" + status);
-					ChatPrint.toPrint("ARM_STATUS_STOW_MODE" + this.stow_mode);
+					ChatPrint.toPrint("ARM_STATUS_STOW_MODE_" + this.stow_mode);
 					ChatPrint.toPrint("ARM_STATUS_BRAKE_MODE_" + this.arm_break);
 					ChatPrint.toPrint("ARM_STATUS_HEAT_MODE_" + this.heat);
 					//do stuff
