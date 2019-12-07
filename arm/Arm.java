@@ -14,14 +14,14 @@ public class Arm extends Thread{
 	//ARM STATES
 	private boolean power = false;
 	private boolean heat = false;
-	private boolean stow_mode = false;
+	private boolean stow_mode = true;
 	private boolean arm_break = false;
 	
 	//fault protection states
 	private boolean fault_power = true;
 	
 	private Shoulder shoulder;
-//	private Elbow elbow;
+	private Elbow elbow;
 	private Wrist wrist;
 	private Turret turret;
 	
@@ -40,7 +40,7 @@ public class Arm extends Thread{
 		this.shoulder = new Shoulder();
 		this.wrist = new Wrist();
 		this.turret = new Turret();
-		
+		this.elbow = new Elbow();
 
 	}
 	
@@ -108,9 +108,12 @@ public class Arm extends Thread{
 				
 				this.shoulder.setAzimuthJoint(Integer.parseInt(shoulder_h));
 				this.shoulder.setElevationJoint(Integer.parseInt(shoulder_v));
+				this.elbow.setElbowJoint(Integer.parseInt(elbow));
 				this.wrist.setWristJoint(Integer.parseInt(wrist));
 				this.turret.setturretJoint(Integer.parseInt(turret));
 				
+				this.stow_mode = false;
+				this.arm_break = false;
 				
 				//ARM_MOVE_1_2_3_4_5
 				//move arm commands
@@ -123,11 +126,20 @@ public class Arm extends Thread{
 			
 			switch (command)
 			{
-				case "ARM_HEAT":
+				case "ARM_HEAT_ON":
 					//do stuff
+					this.heat = true;
+					ChatPrint.toPrint("ARM_RESPONSE_HEAT_ACK");
+					break;
+				case "ARM_HEAT_OFF":
+					//do stuff
+					this.heat = false;
 					ChatPrint.toPrint("ARM_RESPONSE_HEAT_ACK");
 					break;
 				case "ARM_STOW":
+					//to implement
+					this.stow_mode = true;
+					this.stowMode();
 					ChatPrint.toPrint("ARM_RESPONSE_STOW_ACK");
 					//do stuff
 					break;
@@ -136,10 +148,15 @@ public class Arm extends Thread{
 					this.power = false;
 					//do stuff
 					break;
-				case "ARM_BRAKE":
+				case "ARM_BRAKE_ON":
 					ChatPrint.toPrint("ARM_RESPONSE_BRAKE_ACK");
 					//do stuff
 					this.arm_break = true;
+					break;
+				case "ARM_BRAKE_OFF":
+					ChatPrint.toPrint("ARM_RESPONSE_BRAKE_ACK");
+					//do stuff
+					this.arm_break = false;
 					break;
 				case "ARM_COLLISION_CHECK":
 					ChatPrint.toPrint("ARM_RESPONSE_COLLISION_CHECK_ACK");
@@ -162,10 +179,7 @@ public class Arm extends Thread{
 					//do stuff
 					break;
 				case "ARM_POSITION":
-					ChatPrint.toPrint("ARM_RESPONSE_POSITION_");
-					//do stuff
-					break;
-				case "ARM_TURRET_POSITION":
+					ChatPrint.toPrint(getArmPosition());
 					//do stuff
 					break;
 				default:
@@ -184,12 +198,23 @@ public class Arm extends Thread{
 		StringBuilder output = new StringBuilder();
 		output.append("ARM_CURRENT_POS_");
 		output.append(this.shoulder.getAzimuthJoint());
+		output.append("_");
 		output.append(this.shoulder.getElevationJoint());
-		output.append("Elbow");
+		output.append("_");
+		output.append(this.elbow.getElbowJoint());
+		output.append("_");
 		output.append(this.wrist.getWristJoint());
+		output.append("_");
 		output.append(this.turret.getturretJoint());
 		
 		
 		return output.toString();
+	}
+	public void stowMode() {
+		this.shoulder.setAzimuthJoint(0);
+		this.shoulder.setElevationJoint(0);
+		this.elbow.setElbowJoint(0);
+		this.wrist.setWristJoint(0);
+		this.turret.setturretJoint(0);
 	}
 }
