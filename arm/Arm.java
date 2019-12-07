@@ -94,7 +94,7 @@ public class Arm extends Thread{
 				this.power = true;
 				ChatPrint.toPrint("ARM_STATUS_POWER_ON");
 			}else {
-				ChatPrint.toPrint("ARM_STATUS_POWERED_OFF");
+				ChatPrint.toPrint("ARM_STATUS_POWER_OFF");
 			}
 		}else {
 			if (commandArray.length == 7) {
@@ -114,6 +114,15 @@ public class Arm extends Thread{
 				
 				this.stow_mode = false;
 				this.arm_break = false;
+				
+				try {
+					this.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				ChatPrint.toPrint("ARM_RESPONSE_MOVE_COMPLETE");
 				
 				//ARM_MOVE_1_2_3_4_5
 				//move arm commands
@@ -141,6 +150,14 @@ public class Arm extends Thread{
 					this.stow_mode = true;
 					this.stowMode();
 					ChatPrint.toPrint("ARM_RESPONSE_STOW_ACK");
+					
+					try {
+						this.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					ChatPrint.toPrint("ARM_RESPONSE_STOW_COMPLETE");
 					//do stuff
 					break;
 				case "ARM_POWER_OFF":
@@ -173,9 +190,9 @@ public class Arm extends Thread{
 						status = "OFF";
 					}
 					ChatPrint.toPrint("ARM_STATUS_" + status);
-					ChatPrint.toPrint("ARM_STATUS_STOW_MODE_" + this.stow_mode);
-					ChatPrint.toPrint("ARM_STATUS_BRAKE_MODE_" + this.arm_break);
-					ChatPrint.toPrint("ARM_STATUS_HEAT_MODE_" + this.heat);
+					ChatPrint.toPrint("ARM_STATUS_STOW_MODE_" + String.valueOf(this.stow_mode).toUpperCase());
+					ChatPrint.toPrint("ARM_STATUS_BRAKE_MODE_" + String.valueOf(this.arm_break).toUpperCase());
+					ChatPrint.toPrint("ARM_STATUS_HEAT_MODE_" + String.valueOf(this.heat).toUpperCase());
 					//do stuff
 					break;
 				case "ARM_POSITION":
